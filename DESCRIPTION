@@ -1,0 +1,22 @@
+Package: gardenr
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Christopher M.",
+           family = "Loan",
+           role = c("aut", "cre"),
+           email = "cloan@uoregon.edu",
+           comment = c(ORCID = "https://orcid.org/0000-0002-1260-7868"))
+Description: A package meant to help manage and prune trees. Assists with hyperparameter tuning in general linear (mixed-effects) model trees. Pruning methods forthcoming.
+License: CC BY 4.0
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    dplyr,
+    dials, 
+    Formula,
+    glmertree,
+    rsample,
+    tibble

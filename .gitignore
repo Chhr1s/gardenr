@@ -1,0 +1,10 @@
+.Rproj.user
+
+# because Mac
+.DS_Store
+
+# Session Data files
+.RData
+
+# User-specific files
+.Ruserdata
