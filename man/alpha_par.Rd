@@ -4,12 +4,12 @@
 \alias{alpha_par}
 \title{make parameter for tuning level of significance in instability tests}
 \usage{
-alpha_par(min = 0.05, max = 0.001)
+alpha_par(alpha_min = 0.05, alpha_max = 0.001)
 }
 \arguments{
-\item{min}{An integer specifying the minimum value in the parameter grid}
+\item{alpha_min}{An integer specifying the minimum value in the parameter grid}
 
-\item{max}{An integer specifying the maximum value in the parameter grid}
+\item{alpha_max}{An integer specifying the maximum value in the parameter grid}
 }
 \value{
 A quantitative parameter, from \code{{dials}} for maxdepth

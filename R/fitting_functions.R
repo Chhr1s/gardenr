@@ -43,7 +43,7 @@ cross_validate_it <-
     seed = 713,
     # include_cluster = F,
     mod_formula,
-    make_my_tuning_grid = FALSE,
+    tuning_grid = NULL,
     ...
   ){
     set.seed(seed)
@@ -92,7 +92,7 @@ cross_validate_it <-
 
       mae <- mae(observed_y = temp_new_Y, predicted_y = temp_predictions)
 
-      if (make_my_tuning_grid == TRUE){
+      if (is.null(tuning_grid)){
         tuning_grid <-
           grid_max_entropy(
             maxdepth_par(),
@@ -121,6 +121,9 @@ cross_validate_it <-
     }
     return(results)
   }
+
+
+
 
 #####
 ### probably better to have a function, but not sure how to ###

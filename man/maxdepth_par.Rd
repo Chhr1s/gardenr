@@ -4,12 +4,12 @@
 \alias{maxdepth_par}
 \title{make parameter for tuning maximum depth of tree}
 \usage{
-maxdepth_par(min = 2, max = 12)
+maxdepth_par(maxdepth_min = 2, maxdepth_max = 12)
 }
 \arguments{
-\item{min}{An integer specifying the minimum value in the parameter grid}
+\item{maxdepth_min}{An integer specifying the minimum value in the parameter grid}
 
-\item{max}{An integer specifying the maximum value in the parameter grid}
+\item{maxdepth_max}{An integer specifying the maximum value in the parameter grid}
 }
 \value{
 A quantitative parameter, from \code{{dials}} for maxdepth

@@ -4,12 +4,12 @@
 \alias{trim_par}
 \title{make parameter for tuning level of amount of outlier trimmed in instability tests}
 \usage{
-trim_par(min = 0.1, max = 0.5)
+trim_par(trim_min = 0.1, trim_max = 0.5)
 }
 \arguments{
-\item{min}{An integer specifying the minimum value in the parameter grid}
+\item{trim_min}{An integer specifying the minimum value in the parameter grid}
 
-\item{max}{An integer specifying the maximum value in the parameter grid}
+\item{trim_max}{An integer specifying the maximum value in the parameter grid}
 }
 \value{
 A quantitative parameter, from \code{{dials}} for maxdepth

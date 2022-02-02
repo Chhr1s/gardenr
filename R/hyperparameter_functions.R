@@ -2,8 +2,8 @@
 #'
 #' @importFrom dials new_quant_param new_qual_param grid_max_entropy
 #'
-#' @param min An integer specifying the minimum value in the parameter grid
-#' @param max An integer specifying the maximum value in the parameter grid
+#' @param maxdepth_min An integer specifying the minimum value in the parameter grid
+#' @param maxdepth_max An integer specifying the maximum value in the parameter grid
 #'
 #' @return A quantitative parameter, from `{dials}` for maxdepth
 #' @export
@@ -17,7 +17,7 @@
 #'    )
 
 maxdepth_par <-
-  function(min = 2, max = 12){
+  function(maxdepth_min = 2, maxdepth_max = 12){
     new_quant_param(
       type = "integer",
       range = c(min, max),
@@ -43,8 +43,8 @@ maxdepth_par <-
 #'
 #' @importFrom dials new_quant_param new_qual_param grid_max_entropy
 #'
-#' @param min An integer specifying the minimum value in the parameter grid
-#' @param max An integer specifying the maximum value in the parameter grid
+#' @param alpha_min An integer specifying the minimum value in the parameter grid
+#' @param alpha_max An integer specifying the maximum value in the parameter grid
 #'
 #' @return A quantitative parameter, from `{dials}` for maxdepth
 #' @export
@@ -58,7 +58,7 @@ maxdepth_par <-
 #'    )
 
 alpha_par <-
-  function(min = 0.05, max = 0.001){
+  function(alpha_min = 0.05, alpha_max = 0.001){
     new_quant_param(
       type = "double",
       range = c(min, max),
@@ -73,8 +73,8 @@ alpha_par <-
 #'
 #' @importFrom dials new_quant_param new_qual_param grid_max_entropy
 #'
-#' @param min An integer specifying the minimum value in the parameter grid
-#' @param max An integer specifying the maximum value in the parameter grid
+#' @param trim_min An integer specifying the minimum value in the parameter grid
+#' @param trim_max An integer specifying the maximum value in the parameter grid
 #'
 #' @return A quantitative parameter, from `{dials}` for maxdepth
 #' @export
@@ -88,7 +88,7 @@ alpha_par <-
 #'    )
 
 trim_par <-
-  function(min = 0.10, max = 0.50){
+  function(trim_min = 0.10, trim_max = 0.50){
     new_quant_param(
       type = "double",
       range = c(min, max),
@@ -107,3 +107,38 @@ trim_par <-
 #       finalize = NULL
 #     )
 
+## I don't know if I even need to make this because we can just use dials
+# #' make tuning grid
+# #'
+# #' @importFrom dials new_quant_param new_qual_param grid_max_entropy
+# #'
+# #' @param maxdepth_min An integer specifying the minimum value in the parameter grid
+# #' @param maxdepth_max An integer specifying the maximum value in the parameter grid
+# #'
+# #' @return A quantitative parameter, from `{dials}` for maxdepth
+# #' @export
+# #'
+# #' @examples
+# #' dials::grid_max_entropy(
+# #'    maxdepth_par(min = 2, max = 5),
+# #'    alpha_par(min = 0.10, max = 0.001),
+# #'    trim_par(min = 0.1, max = 0.3),
+# #'    size = 10
+# #'    )
+#
+#
+# make_my_tuning_grid <-
+#   function(
+#
+#   ){
+#
+#   tuning_grid <-
+#     grid_max_entropy(
+#       maxdepth_par(),
+#       #minsize_par,
+#       alpha_par(),
+#       trim_par(),
+#       #catsplit_par,
+#       size = 25
+#     )
+#   }

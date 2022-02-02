@@ -4,13 +4,7 @@
 \alias{cross_validate_it}
 \title{fit \code{glmertree()} to a cross-validated data set}
 \usage{
-cross_validate_it(
-  cv_obj,
-  seed = 713,
-  mod_formula,
-  make_my_tuning_grid = FALSE,
-  ...
-)
+cross_validate_it(cv_obj, seed = 713, mod_formula, ...)
 }
 \arguments{
 \item{cv_obj}{vfold_cv—a v-fold cross-validated dataset from \code{rsample::vfold_cv()}}
@@ -19,9 +13,9 @@ cross_validate_it(
 
 \item{mod_formula}{Formula—made from \code{as.Formula()}. uppercase required \verb{:)}}
 
-\item{make_my_tuning_grid}{logical—should default tuning grid be used? (temporary)}
-
 \item{...}{additional arguments to be passed to \code{glmertree()}}
+
+\item{make_my_tuning_grid}{logical—should default tuning grid be used? (temporary)}
 }
 \value{
 tibble—fit statistics (rmse, mae) for object
