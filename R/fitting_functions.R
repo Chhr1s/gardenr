@@ -9,7 +9,7 @@
 #' @param cv_obj vfold_cv—a v-fold cross-validated dataset from `rsample::vfold_cv()`
 #' @param mod_formula Formula—made from `as.Formula()`. uppercase required `:)`
 #' @param seed integer—starting seed
-#' @param make_my_tuning_grid logical—should default tuning grid be used? (temporary)
+#' @param tuning_grid — either tuning grid e.g., from `dials::grid_max_entropy()` or default grid (when `tuning_grid = NULL`).
 #' @param ... additional arguments to be passed to `glmertree()`
 #' @return tibble—fit statistics (rmse, mae) for object
 #'
@@ -102,6 +102,7 @@ cross_validate_it <-
             #catsplit_par,
             size = 25
           )
+        message('meaningful defaults have not been implemented, please specify a tuning grid for better results')
       }
 
       temp_results <-
