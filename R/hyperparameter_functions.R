@@ -10,9 +10,9 @@
 #'
 #' @examples
 #' dials::grid_max_entropy(
-#'    maxdepth_par(min = 2, max = 5),
-#'    alpha_par(min = 0.10, max = 0.001),
-#'    trim_par(min = 0.1, max = 0.3),
+#'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
+#'    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+#'    trim_par(trim_min = 0.1, trim_max = 0.3),
 #'    size = 10
 #'    )
 
@@ -20,7 +20,7 @@ maxdepth_par <-
   function(maxdepth_min = 2, maxdepth_max = 12){
     new_quant_param(
       type = "integer",
-      range = c(min, max),
+      range = c(maxdepth_min, maxdepth_max),
       inclusive = c(TRUE, TRUE),
       trans = NULL,
       label = c(maxdepth_par = "max depth of tree"),
@@ -51,17 +51,17 @@ maxdepth_par <-
 #'
 #' @examples
 #' dials::grid_max_entropy(
-#'    maxdepth_par(min = 2, max = 5),
-#'    alpha_par(min = 0.10, max = 0.001),
-#'    trim_par(min = 0.1, max = 0.3),
+#'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
+#'    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+#'    trim_par(trim_min = 0.1, trim_max = 0.3),
 #'    size = 10
 #'    )
 
 alpha_par <-
-  function(alpha_min = 0.05, alpha_max = 0.001){
+  function(alpha_min = 0.001, alpha_max = 0.05){
     new_quant_param(
       type = "double",
-      range = c(min, max),
+      range = c(alpha_min, alpha_max),
       inclusive = c(TRUE, TRUE),
       trans = NULL,
       label = c(alpha_par = "significance level of split"),
@@ -81,9 +81,9 @@ alpha_par <-
 #'
 #' @examples
 #' dials::grid_max_entropy(
-#'    maxdepth_par(min = 2, max = 5),
-#'    alpha_par(min = 0.10, max = 0.001),
-#'    trim_par(min = 0.1, max = 0.3),
+#'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
+#'    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+#'    trim_par(trim_min = 0.1, trim_max = 0.3),
 #'    size = 10
 #'    )
 
@@ -91,7 +91,7 @@ trim_par <-
   function(trim_min = 0.10, trim_max = 0.50){
     new_quant_param(
       type = "double",
-      range = c(min, max),
+      range = c(trim_min, trim_max),
       inclusive = c(TRUE, TRUE),
       trans = NULL,
       label = c(trim_par = "portion of node used in significance tests"),
@@ -119,12 +119,12 @@ trim_par <-
 # #' @export
 # #'
 # #' @examples
-# #' dials::grid_max_entropy(
-# #'    maxdepth_par(min = 2, max = 5),
-# #'    alpha_par(min = 0.10, max = 0.001),
-# #'    trim_par(min = 0.1, max = 0.3),
-# #'    size = 10
-# #'    )
+#' dials::grid_max_entropy(
+#'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
+#'    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+#'    trim_par(trim_min = 0.1, trim_max = 0.3),
+#'    size = 10
+#'    )
 #
 #
 # make_my_tuning_grid <-

@@ -19,9 +19,9 @@ make parameter for tuning maximum depth of tree
 }
 \examples{
 dials::grid_max_entropy(
-   maxdepth_par(min = 2, max = 5),
-   alpha_par(min = 0.10, max = 0.001),
-   trim_par(min = 0.1, max = 0.3),
+   maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
+   alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+   trim_par(trim_min = 0.1, trim_max = 0.3),
    size = 10
    )
 }
