@@ -69,9 +69,21 @@ fitted <-
     tuning_grid = tuning_grid,
     cluster = id_vector
   )
-class(fitted)
+
 # testing returned table
 expect_s3_class(fitted, c('tbl_df', 'tbl', 'data.frame'))
+
+# cross validate
+fitted_default_tuning <-
+  gardenr::cross_validate_it(
+    cv_obj = cv,
+    seed = 111,
+    mod_formula = formula1,
+    tuning_grid = NULL,
+    cluster = id_vector
+  )
+
+expect_s3_class(fitted_default_tuning, c('tbl_df', 'tbl', 'data.frame'))
 
 # NOT TESTING BECAUSE NOT MY FUNCTION
 fitted <- dplyr::arrange(fitted, rmse)
