@@ -1,0 +1,5 @@
+url: https://chhr1s.github.io/gardenr/
+template:
+  bootstrap: 5
+  bootswatch: cyborg
+  theme: github-dark
