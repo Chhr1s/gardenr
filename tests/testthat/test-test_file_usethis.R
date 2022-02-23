@@ -70,6 +70,7 @@ fitted <-
     cluster = id_vector
   )
 
+
 # testing returned table
 expect_s3_class(fitted, c('tbl_df', 'tbl', 'data.frame'))
 
