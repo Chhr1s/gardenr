@@ -36,11 +36,20 @@ ex_formula <-
       (1 | id_vector) |
       small_c_1 + small_c_2 + nuisance_1a + nuisance_c_1a'
       )
+
+tuning_grid <-
+  dials::grid_max_entropy(
+    maxdepth_par(maxdepth_min = 0L, maxdepth_max = 20L),
+    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+    trim_par(trim_min = 0.01, trim_max = 0.5),
+    size = 10
+  )
+
 fitted <-
    cross_validate_it(
       cv_obj = cv,
       seed = 713,
-      mod_formula = ex_formula,
-      make_my_tuning_grid = TRUE
+      tuning_grid = tuning_grid,
+      mod_formula = ex_formula
       )
 }
