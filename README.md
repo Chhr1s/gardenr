@@ -86,7 +86,6 @@ tuning_grid <-
     trim_par(trim_min = 0.01, trim_max = 0.5),
     size = 10
   )
-
 tuning_grid
 #> # A tibble: 10 × 3
 #>    maxdepth_par alpha_par trim_par

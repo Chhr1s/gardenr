@@ -85,7 +85,6 @@ tuning_grid <-
     trim_par(trim_min = 0.01, trim_max = 0.5),
     size = 10
   )
-
 tuning_grid
 ```
 
