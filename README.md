@@ -6,7 +6,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/Chhr1s/gardenr/workflows/R-CMD-check/badge.svg)](https://github.com/Chhr1s/gardenr/actions)
-[![codecov](https://codecov.io/gh/Chhr1s/gardenr/branch/main/graph/badge.svg?token=8W648N0647)](https://codecov.io/gh/Chhr1s/gardenr)
+[![Codecov test
+coverage](https://codecov.io/gh/Chhr1s/gardenr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Chhr1s/gardenr?branch=main)
 <!-- badges: end -->
 
 The goal of `{gardenr}` is to provide tools for general linear mixed
