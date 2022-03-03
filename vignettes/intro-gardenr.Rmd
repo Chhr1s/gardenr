@@ -5,7 +5,6 @@ vignette: >
   %\VignetteIndexEntry{intro-gardenr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{gardenr, tidyverse, glmertree}
 ---
 
 ```{r, include = FALSE}
@@ -23,7 +22,7 @@ Here is an example of using `cross_validate_it()` to help with hyperparameter tu
 #devtools::install_github("Chhr1s/gardenr")
 library(gardenr)
 library(glmertree)
-library(tidyverse)
+library(dplyr)
 ```
 
 ## Simulate some data
@@ -135,26 +134,5 @@ example_test %>%
       rmse(observed_y = outcome, predicted_y = predictions)
     )
 
-```
-
-## Plot the Parameters in One Space
-
-This can clarify what the difference is
-
-```{r}
-summary(best_fit_trained$tree) %>%
-  purrr::map_dfr(broom::tidy, .id = 'node') %>%
-  mutate(node = factor(node)) %>%
-  ggplot(
-    aes(
-      x = term,
-      y = estimate,
-      color = node,
-      ymin = estimate - 1.96*std.error,
-      ymax = estimate + 1.96*std.error
-      )
-    ) +
-  geom_pointrange(position = position_dodge(width = 0.5)) +
-  theme_bw()
 ```
 
