@@ -49,42 +49,48 @@ cross_validate_it <-
   function(
     cv_obj,
     seed = 713,
-    # include_cluster = F,
     mod_formula,
     tuning_grid = NULL,
     ...
   ){
+    if (is.null(tuning_grid)){
+      tuning_grid <-
+        grid_max_entropy(
+          maxdepth_par(),
+          #minsize_par,
+          alpha_par(),
+          trim_par(),
+          #catsplit_par,
+          size = 25
+        )
+      message('meaningful defaults have not been implemented, please specify a tuning grid for better results')
+    }
     set.seed(seed)
-
     number_cv_sets <- length(cv_obj$splits)
-
     results <- tibble()
+    for (j in 1:nrow(tuning_grid)){
 
+      max_depth_temp <- tuning_grid$maxdepth_par[[j]]
+      alpha_temp <- tuning_grid$alpha_par[[j]]
+      trim_temp <- tuning_grid$trim_par[[j]]
 
-    for (i in 1:number_cv_sets){
+      rmse_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
+      mae_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
 
-      temp_analysis <- analysis(cv_obj$splits[[i]])
+      for (i in 1:number_cv_sets){
 
-      # if (include_cluster == T){
-      #   fitted_result <-
-      #     lmertree(
-      #       data = temp_analysis,
-      #       formula = mod_formula,
-      #       cores = 7,
-      #       cluster = id_vector,
-      #       ...
-      #     )
-      # }
+        temp_analysis <- analysis(cv_obj$splits[[i]])
 
-      #else {
         fitted_result <-
           lmertree(
             data = temp_analysis,
             formula = mod_formula,
-            #cores = 7,
+            maxdepth = max_depth_temp,
+            alpha = alpha_temp,
+            trim = trim_temp,
             ...
           )
-      #}
+
       temp_assessment <- assessment(cv_obj$splits[[i]])
 
       temp_predictions <-
@@ -96,22 +102,16 @@ cross_validate_it <-
 
       temp_new_Y <- temp_assessment$outcome
 
-      rmse <- rmse(observed_y = temp_new_Y, predicted_y = temp_predictions)
-
-      mae <- mae(observed_y = temp_new_Y, predicted_y = temp_predictions)
-
-      if (is.null(tuning_grid)){
-        tuning_grid <-
-          grid_max_entropy(
-            maxdepth_par(),
-            #minsize_par,
-            alpha_par(),
-            trim_par(),
-            #catsplit_par,
-            size = 25
-          )
-        message('meaningful defaults have not been implemented, please specify a tuning grid for better results')
+      rmse_temp[i] <- rmse(observed_y = temp_new_Y, predicted_y = temp_predictions)
+      mae_temp[i] <- mae(observed_y = temp_new_Y, predicted_y = temp_predictions)
+      message(paste0("cv index ", i, " complete"))
       }
+
+      mean_rmse <- mean(rmse_temp)
+      mean_mae <- mean(mae_temp)
+
+      se_rmse <- sd(rmse_temp)/sqrt(length(rmse_temp))
+      se_mae <- sd(mae_temp)/sqrt(length(mae_temp))
 
       temp_results <-
         tuning_grid[i,] %>%
@@ -119,9 +119,9 @@ cross_validate_it <-
           cv_index = i,
           rmse = rmse,
           mae = mae,
-          #fit = list(fitted_result),
+          # build in option to extract each
+          # fit = list(fitted_result),
         ) %>%
-        # this .data important to not get note about global
         select('cv_index', everything())
 
       results <-
@@ -131,30 +131,3 @@ cross_validate_it <-
     }
     return(results)
   }
-
-
-
-
-#####
-### probably better to have a function, but not sure how to ###
-### allow n number through pmap ###
-# icc_33_tuning_res_cluster <-
-#   cv %>%
-#   pmap_dfr(
-#     .l =
-#       as.list(tuning_grid),
-#     .f =
-#       ~fit_glmertree_to_CV(
-#         mod_formula = small_formula,
-#         seed = 713,
-#         cv_obj = cv,
-#         maxdepth = ..1,
-#         minsize = ..2,
-#         alpha = ..3,
-#         trim = ..4,
-#         # catsplit = ..5,
-#         include_cluster = TRUE
-#       )
-#   )
-### ^^ probably better to have a function, but not sure how to  ^^ ###
-### allow varied # of variables through pmap ###

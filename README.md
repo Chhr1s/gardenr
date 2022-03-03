@@ -116,16 +116,6 @@ fitted <-
       mod_formula = ex_formula, 
       cluster = id_vector
       )
-#> iteration 1 complete
-#> iteration 2 complete
-#> iteration 3 complete
-#> iteration 4 complete
-#> iteration 5 complete
-#> iteration 6 complete
-#> iteration 7 complete
-#> iteration 8 complete
-#> iteration 9 complete
-#> iteration 10 complete
 ```
 
 ## See Best Fitting Hyperparameters

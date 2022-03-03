@@ -93,7 +93,7 @@ tuning_grid
 
 Here we fit the model to the cross-validated object.
 
-```{r}
+```{r message=FALSE}
 fitted <-
    cross_validate_it(
       cv_obj = cv,
