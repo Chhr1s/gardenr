@@ -1,8 +1,9 @@
 pandoc: 2.7.3
 pkgdown: 2.0.2
 pkgdown_sha: ~
-articles: {}
-last_built: 2022-03-03T17:00Z
+articles:
+  intro-gardenr: intro-gardenr.html
+last_built: 2022-03-03T18:31Z
 urls:
   reference: https://chhr1s.github.io/gardenr/reference
   article: https://chhr1s.github.io/gardenr/articles
