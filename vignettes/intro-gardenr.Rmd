@@ -21,7 +21,8 @@ Here is an example of using `cross_validate_it()` to help with hyperparameter tu
 ```{r setup, message=FALSE, warning=FALSE}
 library(gardenr)
 library(glmertree)
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
 ```
 
 ## Simulate some data
@@ -92,7 +93,7 @@ fitted <-
 ```{r}
 best_fit <- 
   fitted %>% 
-  dplyr::arrange(mean_rmse) 
+  arrange(mean_rmse) 
 best_fit
 ```
 
@@ -132,6 +133,7 @@ example_test %>%
     rmse_unseen = 
       rmse(observed_y = outcome, predicted_y = predictions)
     )
+
 ```
 
 ## Plot the Parameters in One Space
@@ -141,7 +143,7 @@ This can clarify what the difference is
 ```{r}
 summary(best_fit_trained$tree) %>%
   purrr::map_dfr(broom::tidy, .id = 'node') %>%
-  dplyr::mutate(node = factor(node)) %>%
+  mutate(node = factor(node)) %>%
   ggplot(
     aes(
       x = term,
