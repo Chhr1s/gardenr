@@ -117,8 +117,10 @@ cross_validate_it <-
         tuning_grid[i,] %>%
         mutate(
           cv_index = i,
-          rmse = rmse,
-          mae = mae,
+          mean_rmse = mean_rmse,
+          se_rmse = se_rmse,
+          mean_mae = mean_mae,
+          se_mae = se_mae,
           # build in option to extract each
           # fit = list(fitted_result),
         ) %>%
