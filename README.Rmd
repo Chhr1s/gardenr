@@ -81,7 +81,7 @@ We can then use dials to make a tuning grid. Notice that the parameter objects f
 ```{r}
 tuning_grid <-
   dials::grid_max_entropy(
-    maxdepth_par(maxdepth_min = 0L, maxdepth_max = 20L),
+    maxdepth_par(maxdepth_min = 2L, maxdepth_max = 20L),
     alpha_par(alpha_min = 0.10, alpha_max = 0.001),
     trim_par(trim_min = 0.01, trim_max = 0.5),
     size = 10
@@ -94,81 +94,81 @@ tuning_grid
 Here we fit the model to the cross-validated object.
 
 ```{r message=FALSE}
-# fitted <-
-#    cross_validate_it(
-#       cv_obj = cv,
-#       seed = 713,
-#       tuning_grid = tuning_grid,
-#       mod_formula = ex_formula, 
-#       cluster = id_vector
-#       )
+fitted <-
+   cross_validate_it(
+      cv_obj = cv,
+      seed = 713,
+      tuning_grid = tuning_grid,
+      mod_formula = ex_formula, 
+      cluster = id_vector
+      )
 ```
 
 ## See Best Fitting Hyperparameters
 
 ```{r}
-# best_fit <- 
-#   fitted %>% 
-#   dplyr::arrange(mean_rmse) 
-# best_fit
+best_fit <- 
+  fitted %>% 
+  dplyr::arrange(mean_rmse) 
+best_fit
 ```
 
 ```{r}
-# best_fit_trained <- 
-#   lmertree(
-#     data = example_train, 
-#     formula = 
-#       ex_formula, 
-#     maxdepth = best_fit$maxdepth_par[1], 
-#     alpha = best_fit$alpha_par[1],
-#     trim = best_fit$trim_par[1], 
-#     cluster = id_vector,
-#     verbose = TRUE
-#   )
+best_fit_trained <- 
+  lmertree(
+    data = example_train, 
+    formula = 
+      ex_formula, 
+    maxdepth = best_fit$maxdepth_par[1], 
+    alpha = best_fit$alpha_par[1],
+    trim = best_fit$trim_par[1], 
+    cluster = id_vector,
+    verbose = TRUE
+  )
 ```
 
 ## See the Default Plot
 
 ```{r}
-# plot(best_fit_trained$tree)
+plot(best_fit_trained$tree)
 ```
 
 ## Get RMSE for unseen data
 
 ```{r}
-# example_test %>% 
-#   mutate(
-#     predictions =
-#       predict(
-#         best_fit_trained, 
-#         newdata = example_test, 
-#         allow.new.levels = TRUE
-#         )
-#     ) %>% 
-#   summarize(
-#     rmse_unseen = 
-#       rmse(observed_y = outcome, predicted_y = predictions)
-#     )
+example_test %>% 
+  mutate(
+    predictions =
+      predict(
+        best_fit_trained, 
+        newdata = example_test, 
+        allow.new.levels = TRUE
+        )
+    ) %>% 
+  summarize(
+    rmse_unseen = 
+      rmse(observed_y = outcome, predicted_y = predictions)
+    )
 ```
 
 ## Plot the Parameters in One Space
 
-This can clarify what the difference is 
+This can clarify what the difference is
 
 ```{r}
-# summary(best_fit_trained$tree) %>%
-#   purrr::map_dfr(broom::tidy, .id = 'node') %>% 
-#   dplyr::mutate(node = factor(node)) %>% 
-#   ggplot(
-#     aes(
-#       x = term, 
-#       y = estimate, 
-#       color = node,
-#       ymin = estimate - 1.96*std.error, 
-#       ymax = estimate + 1.96*std.error
-#       )
-#     ) + 
-#   geom_pointrange(position = position_dodge(width = 0.5)) +
-#   theme_bw()
+summary(best_fit_trained$tree) %>%
+  purrr::map_dfr(broom::tidy, .id = 'node') %>%
+  dplyr::mutate(node = factor(node)) %>%
+  ggplot(
+    aes(
+      x = term,
+      y = estimate,
+      color = node,
+      ymin = estimate - 1.96*std.error,
+      ymax = estimate + 1.96*std.error
+      )
+    ) +
+  geom_pointrange(position = position_dodge(width = 0.5)) +
+  theme_bw()
 ```
 

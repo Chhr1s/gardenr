@@ -5,6 +5,7 @@
 #' @importFrom Formula as.Formula
 #' @importFrom glmertree glmertree lmertree
 #' @importFrom rsample initial_split testing training analysis assessment vfold_cv
+#' @importFrom stats sd
 #'
 #' @param cv_obj vfold_cv—a v-fold cross-validated dataset from `rsample::vfold_cv()`
 #' @param mod_formula Formula—made from `as.Formula()`. uppercase required `:)`
