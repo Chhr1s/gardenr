@@ -32,7 +32,9 @@ hyperparameter tuning.
 ``` r
 library(gardenr)
 library(glmertree)
+#> Warning: package 'lme4' was built under R version 4.0.5
 library(tidyverse)
+#> Warning: package 'dplyr' was built under R version 4.0.5
 ```
 
 ## Simulate some data
@@ -108,81 +110,61 @@ tuning_grid
 Here we fit the model to the cross-validated object.
 
 ``` r
-fitted <-
-   cross_validate_it(
-      cv_obj = cv,
-      seed = 713,
-      tuning_grid = tuning_grid,
-      mod_formula = ex_formula, 
-      cluster = id_vector
-      )
+# fitted <-
+#    cross_validate_it(
+#       cv_obj = cv,
+#       seed = 713,
+#       tuning_grid = tuning_grid,
+#       mod_formula = ex_formula, 
+#       cluster = id_vector
+#       )
 ```
 
 ## See Best Fitting Hyperparameters
 
 ``` r
-best_fit <- 
-  fitted %>% 
-  dplyr::arrange(rmse) 
-best_fit
-#> # A tibble: 10 × 6
-#>    cv_index maxdepth_par alpha_par trim_par  rmse     mae
-#>       <int>        <int>     <dbl>    <dbl> <dbl>   <dbl>
-#>  1        7           14   0.0476    0.334  0.436 0.00262
-#>  2        3           13   0.00564   0.0229 0.440 0.00267
-#>  3        6            9   0.0116    0.453  0.446 0.00275
-#>  4       10            1   0.0837    0.0433 0.450 0.00265
-#>  5        5           19   0.00537   0.273  0.451 0.00273
-#>  6        4            9   0.0447    0.158  0.452 0.00278
-#>  7        9           11   0.0811    0.0343 0.462 0.00275
-#>  8        8            0   0.0664    0.471  0.470 0.00286
-#>  9        1           12   0.0996    0.402  0.484 0.00301
-#> 10        2           18   0.0548    0.0993 0.494 0.00304
+# best_fit <- 
+#   fitted %>% 
+#   dplyr::arrange(mean_rmse) 
+# best_fit
 ```
 
 ``` r
-best_fit_trained <- 
-  lmertree(
-    data = example_train, 
-    formula = 
-      ex_formula, 
-    maxdepth = best_fit$maxdepth_par[1], 
-    alpha = best_fit$alpha_par[1],
-    trim = best_fit$trim_par[1], 
-    cluster = id_vector,
-    verbose = TRUE
-  )
-#> 'log Lik.' -903.9974 (df=6)
-#> 'log Lik.' -885.5143 (df=10)
-#> 'log Lik.' -885.5143 (df=10)
+# best_fit_trained <- 
+#   lmertree(
+#     data = example_train, 
+#     formula = 
+#       ex_formula, 
+#     maxdepth = best_fit$maxdepth_par[1], 
+#     alpha = best_fit$alpha_par[1],
+#     trim = best_fit$trim_par[1], 
+#     cluster = id_vector,
+#     verbose = TRUE
+#   )
 ```
 
 ## See the Default Plot
 
 ``` r
-plot(best_fit_trained$tree)
+# plot(best_fit_trained$tree)
 ```
-
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 ## Get RMSE for unseen data
 
 ``` r
-example_test %>% 
-  mutate(
-    predictions =
-      predict(
-        best_fit_trained, 
-        newdata = example_test, 
-        allow.new.levels = TRUE
-        )
-    ) %>% 
-  summarize(
-    rmse_unseen = 
-      rmse(observed_y = outcome, predicted_y = predictions)
-    )
-#>   rmse_unseen
-#> 1   0.4435808
+# example_test %>% 
+#   mutate(
+#     predictions =
+#       predict(
+#         best_fit_trained, 
+#         newdata = example_test, 
+#         allow.new.levels = TRUE
+#         )
+#     ) %>% 
+#   summarize(
+#     rmse_unseen = 
+#       rmse(observed_y = outcome, predicted_y = predictions)
+#     )
 ```
 
 ## Plot the Parameters in One Space
@@ -190,20 +172,18 @@ example_test %>%
 This can clarify what the difference is
 
 ``` r
-summary(best_fit_trained$tree) %>%
-  purrr::map_dfr(broom::tidy, .id = 'node') %>% 
-  dplyr::mutate(node = factor(node)) %>% 
-  ggplot(
-    aes(
-      x = term, 
-      y = estimate, 
-      color = node,
-      ymin = estimate - 1.96*std.error, 
-      ymax = estimate + 1.96*std.error
-      )
-    ) + 
-  geom_pointrange(position = position_dodge(width = 0.5)) +
-  theme_bw()
+# summary(best_fit_trained$tree) %>%
+#   purrr::map_dfr(broom::tidy, .id = 'node') %>% 
+#   dplyr::mutate(node = factor(node)) %>% 
+#   ggplot(
+#     aes(
+#       x = term, 
+#       y = estimate, 
+#       color = node,
+#       ymin = estimate - 1.96*std.error, 
+#       ymax = estimate + 1.96*std.error
+#       )
+#     ) + 
+#   geom_pointrange(position = position_dodge(width = 0.5)) +
+#   theme_bw()
 ```
-
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />

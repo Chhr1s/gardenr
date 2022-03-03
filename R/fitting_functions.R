@@ -129,7 +129,7 @@ cross_validate_it <-
       results <-
         bind_rows(results, temp_results)
 
-      message(paste0('iteration ', i, ' complete'))
+      message(paste0("hyperparameter index ", j, " complete"))
     }
     return(results)
   }
