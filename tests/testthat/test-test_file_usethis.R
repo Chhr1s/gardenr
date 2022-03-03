@@ -87,7 +87,7 @@ fitted_default_tuning <-
 expect_s3_class(fitted_default_tuning, c('tbl_df', 'tbl', 'data.frame'))
 
 # NOT TESTING BECAUSE NOT MY FUNCTION
-fitted <- dplyr::arrange(fitted, rmse)
+fitted <- dplyr::arrange(fitted, mean_rmse)
 
 # NOT TESTING BECAUSE NOT MY FUNCTION
 cv_trained <-
