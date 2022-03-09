@@ -2,7 +2,7 @@
 title: "Introduction to `{gardenr}`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{intro-gardenr}
+  %\VignetteIndexEntry{Introduction to `{gardenr}`}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
