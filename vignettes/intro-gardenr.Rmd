@@ -41,7 +41,7 @@ Wherever possible, I wanted to rely on good functions from the `{tidymodels}` fr
 example_split <- rsample::initial_split(dat)
 example_train <- rsample::training(example_split)
 example_test  <-  rsample::testing(example_split)
-cv <- rsample::vfold_cv(data = example_train, v = 2)
+cv <- rsample::vfold_cv(data = example_train, v = 10)
 ```
 
 ## Make a `Formula` object
