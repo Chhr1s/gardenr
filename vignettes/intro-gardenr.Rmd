@@ -1,5 +1,5 @@
 ---
-title: "intro-gardenr"
+title: "Introduction to `{gardenr}`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{intro-gardenr}
@@ -27,10 +27,10 @@ library(dplyr)
 
 ## Simulate some data
 
-Here's a function within the package to simulate some multilevel data. It has defaults, but these can be changed. use `?sim_multilevel()` for details.
+Here's a function within the package to simulate some multilevel data. It has defaults, but these can be changed. use `?sim_multilevel()` for details. I made the standard deviation of residual variance large in the example at both level 1 and level 2 to make the difference between default hyperparameters and tuned models more dramatic.
 
 ```{r}
-dat <- sim_multilevel()
+dat <- sim_multilevel(residual_var_sd_1 = 2, residual_var_sd_2 = 6)
 ```
 
 ## Split Data & Make CV Object
@@ -41,7 +41,7 @@ Wherever possible, I wanted to rely on good functions from the `{tidymodels}` fr
 example_split <- rsample::initial_split(dat)
 example_train <- rsample::training(example_split)
 example_test  <-  rsample::testing(example_split)
-cv <- rsample::vfold_cv(data = example_train, v = 10)
+cv <- rsample::vfold_cv(data = example_train, v = 2)
 ```
 
 ## Make a `Formula` object
@@ -55,7 +55,6 @@ ex_formula <-
       (1 | id_vector) |
       small_2 + small_c_1 + small_c_2 + nuisance_1a + nuisance_c_1a'
       )
-
 ```
 
 ## Make a Tuning Grid
@@ -111,27 +110,76 @@ best_fit_trained <-
   )
 ```
 
-## See the Default Plot
+## See Splits as Plot
+
+```{r fig.width = 8, fig.height = 8}
+plot(
+  best_fit_trained, 
+  which = 'tree',
+  )
+```
+
+```{r fig.width = 8, fig.height = 8}
+plot(
+  best_fit_trained, 
+  which = 'tree.coef',
+  )
+```
+
+## Compare this to a tree with default hyperparameters
+
+It's clear that this tree has made many more splits than the trained model. 
 
 ```{r}
-plot(best_fit_trained$tree)
+untrained <- 
+  lmertree(
+    data = example_train, 
+    formula = 
+      ex_formula, 
+    cluster = id_vector,
+    verbose = TRUE
+  )
+```
+
+```{r fig.width = 12, fig.height = 12}
+plot(
+  untrained,  
+  which = 'tree'
+  )
+```
+
+```{r fig.width = 8, fig.height = 8}
+plot(
+  untrained, 
+  which = 'tree.coef',
+  )
 ```
 
 ## Get RMSE for unseen data
 
+We see here that the model fits unseen data slightly better than the model with default hyperparameters.
+
 ```{r}
 example_test %>% 
   mutate(
-    predictions =
+    predictions_tuned =
       predict(
         best_fit_trained, 
-        newdata = example_test, 
+        newdata = ., 
         allow.new.levels = TRUE
-        )
+        ),
+    predictions_default_hyperparams =
+      predict(
+        untrained, 
+        newdata = ., 
+        allow.new.levels = TRUE
+        ),
     ) %>% 
   summarize(
-    rmse_unseen = 
-      rmse(observed_y = outcome, predicted_y = predictions)
+    tuned_RMSE = 
+      rmse(observed_y = outcome, predicted_y = predictions_tuned),
+    default_hyperparams_RMSE = 
+      rmse(observed_y = outcome, predicted_y = predictions_default_hyperparams)
     )
 
 ```

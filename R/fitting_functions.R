@@ -89,7 +89,7 @@ cross_validate_it <-
             maxdepth = max_depth_temp,
             alpha = alpha_temp,
             trim = trim_temp,
-            ...
+            #...
           )
 
       temp_assessment <- assessment(cv_obj$splits[[i]])
@@ -115,9 +115,9 @@ cross_validate_it <-
       se_mae <- sd(mae_temp)/sqrt(length(mae_temp))
 
       temp_results <-
-        tuning_grid[i,] %>%
+        tuning_grid[j,] %>%
         mutate(
-          cv_index = i,
+          grid_index = j,
           mean_rmse = mean_rmse,
           se_rmse = se_rmse,
           mean_mae = mean_mae,
@@ -125,7 +125,7 @@ cross_validate_it <-
           # build in option to extract each
           # fit = list(fitted_result),
         ) %>%
-        select('cv_index', everything())
+        select('grid_index', everything())
 
       results <-
         bind_rows(results, temp_results)
