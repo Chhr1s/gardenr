@@ -1,12 +1,5 @@
 #' fit `glmertree()` to a cross-validated data set
 #'
-#' @importFrom dplyr bind_rows everything select mutate `%>%` pull tibble
-#' @importFrom dials grid_max_entropy
-#' @importFrom Formula as.Formula
-#' @importFrom glmertree glmertree lmertree
-#' @importFrom rsample initial_split testing training analysis assessment vfold_cv
-#' @importFrom stats sd
-#'
 #' @param cv_obj vfold_cv—a v-fold cross-validated dataset from `rsample::vfold_cv()`
 #' @param mod_formula Formula—made from `as.Formula()`. uppercase required `:)`
 #' @param seed integer—starting seed
@@ -58,10 +51,8 @@ cross_validate_it <-
       tuning_grid <-
         grid_max_entropy(
           maxdepth_par(),
-          #minsize_par,
           alpha_par(),
           trim_par(),
-          #catsplit_par,
           size = 25
         )
       message('meaningful defaults have not been implemented, please specify a tuning grid for better results')
@@ -69,7 +60,7 @@ cross_validate_it <-
     set.seed(seed)
     number_cv_sets <- length(cv_obj$splits)
     results <- tibble()
-    for (j in 1:nrow(tuning_grid)){
+    for (j in 1:nrow(tuning_grid)) {
 
       max_depth_temp <- tuning_grid$maxdepth_par[[j]]
       alpha_temp <- tuning_grid$alpha_par[[j]]
@@ -78,7 +69,7 @@ cross_validate_it <-
       rmse_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       mae_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
 
-      for (i in 1:number_cv_sets){
+      for (i in 1:number_cv_sets) {
 
         temp_analysis <- analysis(cv_obj$splits[[i]])
 
@@ -132,5 +123,5 @@ cross_validate_it <-
 
       message(paste0("hyperparameter index ", j, " complete"))
     }
-    return(results)
+    results
   }
