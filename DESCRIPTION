@@ -27,4 +27,5 @@ Suggests:
     rmarkdown
 Config/testthat/edition: 3
 URL: https://chhr1s.github.io/gardenr/
+BugReports: https://github.com/Chhr1s/gardenr/issues
 VignetteBuilder: knitr

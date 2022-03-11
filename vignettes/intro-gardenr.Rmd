@@ -19,7 +19,6 @@ knitr::opts_chunk$set(
 Here is an example of using `cross_validate_it()` to help with hyperparameter tuning. 
 
 ```{r setup, message=FALSE, warning=FALSE}
-#devtools::install_github("Chhr1s/gardenr")
 library(gardenr)
 library(glmertree)
 library(dplyr)
@@ -27,7 +26,7 @@ library(dplyr)
 
 ## Simulate some data
 
-Here's a function within the package to simulate some multilevel data. It has defaults, but these can be changed. use `?sim_multilevel()` for details. I made the standard deviation of residual variance large in the example at both level 1 and level 2 to make the difference between default hyperparameters and tuned models more dramatic.
+We can start by simulating some multilevel data using the `sim_multilevel()` function. See `?sim_multilevel()` for defaults and other details. In this example, I have made the standard deviation of the residual variance large at both level 1 and level 2 to make the difference between default hyperparameters and tuned models more dramatic (to help illustrate the problems the package helps solve).
 
 ```{r}
 dat <- sim_multilevel(residual_var_sd_1 = 2, residual_var_sd_2 = 6)
@@ -35,7 +34,7 @@ dat <- sim_multilevel(residual_var_sd_1 = 2, residual_var_sd_2 = 6)
 
 ## Split Data & Make CV Object
 
-Wherever possible, I wanted to rely on good functions from the `{tidymodels}` framework. We can use `{rsample}` to spit the data and make a cross-validation object. 
+The package is built off the `{tidymodels}` framework, so we can use `{rsample}` to split the data and make a cross-validation object. 
 
 ```{r}
 example_split <- rsample::initial_split(dat)
