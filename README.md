@@ -24,7 +24,7 @@ You can install the development version of `{gardenr}` from
 devtools::install_github("Chhr1s/gardenr")
 ```
 
-# purpose
+# Purpose
 
 The purpose of the `{gardenr}` package is to improve workflows with
 model-based recursive partitioning. This includes GLM trees, GLMM trees,
@@ -32,4 +32,6 @@ and will soon incorporate other variants. At present, this is mostly for
 cross-validation improvements to tune hyperparameters, but this will
 extend into novel pruning mechanisms.
 
-Please see the vignette for examples.
+Please see the [intro
+vignette](https://chhr1s.github.io/gardenr/articles/intro-gardenr.html)
+for examples.
