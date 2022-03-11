@@ -101,7 +101,7 @@ cross_validate_it <-
           allow.new.levels = TRUE
           )
 
-      temp_new_Y <- temp_assessment$outcome
+      temp_new_Y <- temp_assessment[[attr(ex_formula, "lhs")[[1]]]]
 
       rmse_temp[i] <- rmse(observed_y = temp_new_Y, predicted_y = temp_predictions)
       mae_temp[i] <- mae(observed_y = temp_new_Y, predicted_y = temp_predictions)
