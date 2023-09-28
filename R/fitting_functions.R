@@ -88,10 +88,14 @@ cross_validate_it <-
         temp_analysis <- analysis(cv_obj$splits[[i]])
 
         fitted_result <-
-          lmertree(
-            data = temp_analysis,
-            formula = mod_formula,
-            mob.control = do.call(mob_control, tuning_grid_temp)
+          do.call(
+            lmertree,
+            c(list(
+              data = temp_analysis,
+              formula = mod_formula
+            ),
+            tuning_grid_temp
+            )
           )
 
       temp_assessment <- assessment(cv_obj$splits[[i]])
@@ -243,16 +247,18 @@ cross_validate_it_dichot <-
         temp_analysis <- analysis(cv_obj$splits[[i]])
 
         fitted_result <-
-          glmertree(
-            data = temp_analysis,
-            formula = mod_formula,
-            maxdepth = max_depth_temp,
-            alpha = alpha_temp,
-            trim = trim_temp,
-            family = binomial(),
-            glmer.control = glmerControl(optim = 'bobyqa'),
-            mob.control = do.call(mob_control, tuning_grid_temp)
+          do.call(
+            glmertree,
+            c(list(
+              data = temp_analysis,
+              formula = mod_formula,
+              family = binomial(),
+              glmer.control = glmerControl(optim = 'bobyqa')
+            ),
+            tuning_grid_temp
+            )
           )
+
 
         temp_assessment <- assessment(cv_obj$splits[[i]])
 
