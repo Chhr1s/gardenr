@@ -11,7 +11,7 @@
 #' @examples
 #' dials::grid_max_entropy(
 #'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
-#'    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+#'    alpha_par(alpha_min = 0.001, alpha_max = 0.1),
 #'    trim_par(trim_min = 0.1, trim_max = 0.3),
 #'    size = 10
 #'    )
@@ -41,7 +41,7 @@ maxdepth_par <-
 #' @examples
 #' dials::grid_max_entropy(
 #'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
-#'    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+#'    alpha_par(alpha_min = 0.001, alpha_max = 0.1),
 #'    minsize_par(minsize_min = 200, minsize_max = 500),
 #'    size = 10
 #'    )
@@ -101,7 +101,7 @@ mtry_par <- function(mtry_min, mtry_max){
 #' @examples
 #' dials::grid_max_entropy(
 #'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
-#'    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+#'    alpha_par(alpha_min = 0.001, alpha_max = 0.1),
 #'    prune_par(),
 #'    size = 10
 #'    )
@@ -131,7 +131,7 @@ prune_par <-
 #' @examples
 #' dials::grid_max_entropy(
 #'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
-#'    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+#'    alpha_par(alpha_min = 0.001, alpha_max = 0.1),
 #'    bonferroni_par(),
 #'    size = 10
 #'    )
@@ -162,7 +162,7 @@ bonferroni_par <-
 #' @examples
 #' dials::grid_max_entropy(
 #'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
-#'    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+#'    alpha_par(alpha_min = 0.001, alpha_max = 0.1),
 #'    bonferroni_par(),
 #'    size = 10
 #'    )
@@ -192,7 +192,7 @@ restart_par <-
 #' @examples
 #' dials::grid_max_entropy(
 #'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
-#'    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+#'    alpha_par(alpha_min = 0.001, alpha_max = 0.1),
 #'    bonferroni_par(),
 #'    size = 10
 #'    )
@@ -224,7 +224,7 @@ ordinal_par <-
 #' @examples
 #' dials::grid_max_entropy(
 #'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
-#'    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+#'    alpha_par(alpha_min = 0.001, alpha_max = 0.1),
 #'    nrep_par(1000, 10000),
 #'    size = 10
 #'    )
@@ -255,7 +255,7 @@ nrep_par <-
 #' @examples
 #' dials::grid_max_entropy(
 #'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
-#'    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+#'    alpha_par(alpha_min = 0.001, alpha_max = 0.1),
 #'    bonferroni_par(),
 #'    size = 10
 #'    )
@@ -288,7 +288,7 @@ breakties_par <-
 #' @examples
 #' dials::grid_max_entropy(
 #'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
-#'    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+#'    alpha_par(alpha_min = 0.001, alpha_max = 0.1),
 #'    trim_par(trim_min = 0.1, trim_max = 0.3),
 #'    size = 10
 #'    )
@@ -318,7 +318,7 @@ alpha_par <-
 #' @examples
 #' dials::grid_max_entropy(
 #'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
-#'    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+#'    alpha_par(alpha_min = 0.001, alpha_max = 0.1),
 #'    trim_par(trim_min = 0.1, trim_max = 0.3),
 #'    size = 10
 #'    )
@@ -340,8 +340,7 @@ trim_par <-
 #'
 #' @importFrom dials new_quant_param new_qual_param grid_max_entropy
 #'
-#' @param trim_min An integer specifying the minimum value in the parameter grid
-#' @param trim_max An integer specifying the maximum value in the parameter grid
+#' @param values a vector of catsplit_par values (only 2 options currently available)
 #'
 #' @return A quantitative parameter, from `{dials}` for catsplit
 #' @export
@@ -349,16 +348,18 @@ trim_par <-
 #' @examples
 #' dials::grid_max_entropy(
 #'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
-#'    alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+#'    alpha_par(alpha_min = 0.001, alpha_max = 0.1),
 #'    catsplit_par(),
 #'    size = 10
 #'    )
 
 catsplit_par <-
-  new_qual_param(
-    type = "character",
-    values = c('binary', 'multiway'),
-    label = c(catsplit_par = "splitting method for (unordered) factors"),
-    finalize = NULL
-  )
+  function(values = c('binary', 'multiway')){
+    new_qual_param(
+      type = "character",
+      values = values,
+      label = c(catsplit_par = "splitting method for (unordered) factors"),
+      finalize = NULL
+    )
+  }
 
