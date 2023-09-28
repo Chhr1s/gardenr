@@ -107,7 +107,7 @@ mtry_par <- function(mtry_min, mtry_max){
 #'    )
 
 prune_par <-
-  function(values = c('aic', 'bic')){
+  function(values = c('aic', 'bic', 'null')){
 
     new_qual_param(
       type = "character",

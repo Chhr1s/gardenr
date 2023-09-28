@@ -4,7 +4,7 @@
 \alias{prune_par}
 \title{make parameter for method of splitting factors (unordered categorical variables)}
 \usage{
-prune_par(values = c("aic", "bic"))
+prune_par(values = c("aic", "bic", "null"))
 }
 \arguments{
 \item{trim_min}{An integer specifying the minimum value in the parameter grid}

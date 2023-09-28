@@ -238,6 +238,9 @@ cross_validate_it_dichot <-
             setNames(sub('_par', '', names(.)))
         )
 
+      tuning_grid_temp <- replace_prune_when_null(tuning_grid_temp)
+
+
       class_acc_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       aic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       bic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
@@ -247,6 +250,8 @@ cross_validate_it_dichot <-
       for (i in 1:number_cv_sets){
 
         temp_analysis <- analysis(cv_obj$splits[[i]])
+
+        ## this can be modified to get the lmer/glmer in one function
 
         fitted_result <-
           do.call(

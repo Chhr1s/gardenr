@@ -55,3 +55,14 @@ class_acc <-
     acc <- sum(observed_y == predicted_y)/length(observed_y)
     return(acc)
   }
+
+#' internal function which takes the temporary tuning grid (used within cross validate)
+#' and swaps the "null" as a character to it as NULL
+replace_prune_when_null <- function(tuning_grid_temp) {
+  lapply(tuning_grid_temp, function(vec) {
+    if ("prune" %in% names(vec) && vec[["prune"]] == 'null') {
+      vec[["prune"]] <- NULL
+    }
+    return(vec)
+  })
+}
