@@ -214,8 +214,10 @@ cross_validate_it_dichot <-
       tuning_grid <-
         grid_max_entropy(
           maxdepth_par(),
+          #minsize_par,
           alpha_par(),
           trim_par(),
+          #catsplit_par,
           size = 25
         )
       message('meaningful defaults have not been implemented, please specify a tuning grid for better results')
@@ -240,59 +242,52 @@ cross_validate_it_dichot <-
       aic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       bic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
 
-      for (i in 1:number_cv_sets) {
+      for (i in 1:number_cv_sets){
 
-        tryCatch({
-          temp_analysis <- analysis(cv_obj$splits[[i]])
+        temp_analysis <- analysis(cv_obj$splits[[i]])
 
-          fitted_result <-
-            do.call(
-              glmertree,
-              c(list(
-                data = temp_analysis,
-                formula = mod_formula,
-                family = binomial(),
-                glmer.control = glmerControl(optim = 'bobyqa')
-              ),
-              tuning_grid_temp
-              )
+        fitted_result <-
+          do.call(
+            glmertree,
+            c(list(
+              data = temp_analysis,
+              formula = mod_formula,
+              family = binomial(),
+              glmer.control = glmerControl(optim = 'bobyqa'),
+              nAGQ = 0
+            ),
+            tuning_grid_temp
             )
+          )
 
-          temp_assessment <- assessment(cv_obj$splits[[i]])
 
-          temp_predictions <-
-            glmertree:::predict.glmertree(
-              fitted_result,
-              newdata = temp_assessment,
-              allow.new.levels = TRUE,
-              type = 'response'
-            )
+        temp_assessment <- assessment(cv_obj$splits[[i]])
 
-          temp_new_Y <- temp_assessment[[attr(mod_formula, "lhs")[[1]]]]
+        temp_predictions <-
+          glmertree:::predict.glmertree(
+            fitted_result,
+            newdata = temp_assessment,
+            allow.new.levels = TRUE,
+            type = 'response'
+          )
 
-          class_acc_temp[i] <- class_acc(observed_y = temp_new_Y, predicted_y = round(temp_predictions))
-          aic_temp[i] <- AIC(fitted_result)
-          bic_temp[i] <- BIC(fitted_result)
-          message(paste0("cv index ", i, " complete"))
-        }, error = function(e) {
-          # Handle errors (if needed)
-          class_acc_temp[i] <- NA_real_
-          aic_temp[i] <- NA_real_
-          bic_temp[i] <- NA_real_
-          message(paste0("Error in cv index ", i, ": ", conditionMessage(e)))
-        })
+        temp_new_Y <- temp_assessment[[attr(mod_formula, "lhs")[[1]]]]
+
+        class_acc_temp[i] <- class_acc(observed_y = temp_new_Y, predicted_y = round(temp_predictions))
+        aic_temp[i] <- AIC(fitted_result)
+        bic_temp[i] <- BIC(fitted_result)
+        message(paste0("cv index ", i, " complete"))
       }
 
-      count_model_errors <- sum(is.na(class_acc_temp))
-      mean_class_acc <- mean(class_acc_temp, na.rm = TRUE)
+      mean_class_acc <- mean(class_acc_temp)
 
-      mean_aic <- mean(aic_temp, na.rm = TRUE)
-      mean_bic <- mean(bic_temp, na.rm = TRUE)
+      mean_aic <- mean(aic_temp)
+      mean_bic <- mean(bic_temp)
 
-      se_class_acc <- sd(class_acc_temp, na.rm = TRUE)/sqrt(length(class_acc_temp))
+      se_class_acc <- sd(class_acc_temp)/sqrt(length(class_acc_temp))
 
-      se_aic <- sd(aic_temp, na.rm = TRUE)/sqrt(length(aic_temp))
-      se_bic <- sd(bic_temp, na.rm = TRUE)/sqrt(length(bic_temp))
+      se_aic <- sd(aic_temp)/sqrt(length(aic_temp))
+      se_bic <- sd(bic_temp)/sqrt(length(bic_temp))
 
       temp_results <-
         tuning_grid[j,] %>%
@@ -304,7 +299,6 @@ cross_validate_it_dichot <-
           se_aic = se_aic,
           mean_bic = mean_bic,
           se_bic = se_bic,
-          count_model_errors = count_model_errors,
           # build in option to extract each
           # fit = list(fitted_result),
         ) %>%
