@@ -95,7 +95,7 @@ cross_validate_it <-
             maxdepth = max_depth_temp,
             alpha = alpha_temp,
             trim = trim_temp,
-            #...
+            ...
           )
 
       temp_assessment <- assessment(cv_obj$splits[[i]])
@@ -248,8 +248,9 @@ cross_validate_it_dichot <-
             maxdepth = max_depth_temp,
             alpha = alpha_temp,
             trim = trim_temp,
-            #...,
             family = binomial(),
+            glmer.control = glmerControl(optim = 'bobyqa'),
+            ...
           )
 
         temp_assessment <- assessment(cv_obj$splits[[i]])
