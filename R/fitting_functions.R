@@ -71,7 +71,11 @@ cross_validate_it <-
     results <- tibble()
     for (j in 1:nrow(tuning_grid)){
 
-      tuning_grid_temp <- as.list(tuning_grid[j,])
+      tuning_grid_temp <-
+        as.list(
+          tuning_grid[j,] %>%
+            setNames(sub('_par', '', names(.)))
+        )
 
       rmse_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       mae_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
@@ -218,10 +222,17 @@ cross_validate_it_dichot <-
     set.seed(seed)
     number_cv_sets <- length(cv_obj$splits)
     results <- tibble()
+
+
+
     for (j in 1:nrow(tuning_grid)){
 
 
-      tuning_grid_temp <- as.list(tuning_grid[j,])
+      tuning_grid_temp <-
+        as.list(
+          tuning_grid[j,] %>%
+            setNames(sub('_par', '', names(.)))
+        )
 
       class_acc_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       aic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
