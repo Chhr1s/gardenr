@@ -296,10 +296,10 @@ cross_validate_it_dichot <-
       mean_aic <- mean(aic_temp, na.rm = TRUE)
       mean_bic <- mean(bic_temp, na.rm = TRUE)
 
-      se_class_acc <- sd(class_acc_temp)/sqrt(length(class_acc_temp))
+      se_class_acc <- sd(class_acc_temp, na.rm = TRUE)/sqrt(length(class_acc_temp))
 
-      se_aic <- sd(aic_temp)/sqrt(length(aic_temp))
-      se_bic <- sd(bic_temp)/sqrt(length(bic_temp))
+      se_aic <- sd(aic_temp, na.rm = TRUE)/sqrt(length(aic_temp))
+      se_bic <- sd(bic_temp, na.rm = TRUE)/sqrt(length(bic_temp))
 
       temp_results <-
         tuning_grid[j,] %>%
