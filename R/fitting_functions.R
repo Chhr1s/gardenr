@@ -274,12 +274,6 @@ cross_validate_it_dichot <-
           aic_temp[i] <- AIC(fitted_result)
           bic_temp[i] <- BIC(fitted_result)
           message(paste0("cv index ", i, " complete"))
-        }, warning = function(w) {
-          # Handle warnings
-          # class_acc_temp[i] <- NA_real_
-          # aic_temp[i] <- NA_real_
-          # bic_temp[i] <- NA_real_
-          message(paste0("Warning in cv index ", i, ": ", conditionMessage(w)))
         }, error = function(e) {
           # Handle errors (if needed)
           class_acc_temp[i] <- NA_real_
@@ -288,7 +282,6 @@ cross_validate_it_dichot <-
           message(paste0("Error in cv index ", i, ": ", conditionMessage(e)))
         })
       }
-
 
       count_model_errors <- sum(is.na(class_acc_temp))
       mean_class_acc <- mean(class_acc_temp, na.rm = TRUE)
