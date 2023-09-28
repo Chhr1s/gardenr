@@ -9,8 +9,7 @@ cross_validate_it_dichot(
   seed = 713,
   mod_formula,
   tuning_grid = NULL,
-  dichotomous = FALSE,
-  ...
+  dichotomous = FALSE
 )
 }
 \arguments{

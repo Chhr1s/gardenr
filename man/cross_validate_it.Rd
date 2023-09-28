@@ -4,7 +4,7 @@
 \alias{cross_validate_it}
 \title{fit \code{lmertree()} to a cross-validated data set. For continuous outcomes}
 \usage{
-cross_validate_it(cv_obj, seed = 713, mod_formula, tuning_grid = NULL, ...)
+cross_validate_it(cv_obj, seed = 713, mod_formula, tuning_grid = NULL)
 }
 \arguments{
 \item{cv_obj}{vfold_cv—a v-fold cross-validated dataset from \code{rsample::vfold_cv()}}

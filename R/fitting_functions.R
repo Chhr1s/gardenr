@@ -51,35 +51,30 @@ cross_validate_it <-
     cv_obj,
     seed = 713,
     mod_formula,
-    tuning_grid = NULL,
-    ...
+    tuning_grid = NULL
   ){
     if (is.null(tuning_grid)){
       tuning_grid <-
         grid_max_entropy(
           maxdepth_par(),
-          #minsize_par,
           alpha_par(),
           trim_par(),
-          #catsplit_par,
           size = 25
         )
       message('meaningful defaults have not been implemented, please specify a tuning grid for better results')
     }
+
+
     set.seed(seed)
+
     number_cv_sets <- length(cv_obj$splits)
     results <- tibble()
     for (j in 1:nrow(tuning_grid)){
 
-      max_depth_temp <- tuning_grid$maxdepth_par[[j]]
-      alpha_temp <- tuning_grid$alpha_par[[j]]
-      trim_temp <- tuning_grid$trim_par[[j]]
-
+      tuning_grid_temp <- as.list(tuning_grid[j,])
 
       rmse_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       mae_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
-
-
 
       aic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       bic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
@@ -92,10 +87,7 @@ cross_validate_it <-
           lmertree(
             data = temp_analysis,
             formula = mod_formula,
-            maxdepth = max_depth_temp,
-            alpha = alpha_temp,
-            trim = trim_temp,
-            ...
+            mob.control = do.call(mob_control, tuning_grid_temp)
           )
 
       temp_assessment <- assessment(cv_obj$splits[[i]])
@@ -208,8 +200,7 @@ cross_validate_it_dichot <-
     seed = 713,
     mod_formula,
     tuning_grid = NULL,
-    dichotomous = FALSE,
-    ...
+    dichotomous = FALSE
   ){
     if (is.null(tuning_grid)){
       tuning_grid <-
@@ -229,9 +220,8 @@ cross_validate_it_dichot <-
     results <- tibble()
     for (j in 1:nrow(tuning_grid)){
 
-      max_depth_temp <- tuning_grid$maxdepth_par[[j]]
-      alpha_temp <- tuning_grid$alpha_par[[j]]
-      trim_temp <- tuning_grid$trim_par[[j]]
+
+      tuning_grid_temp <- as.list(tuning_grid[j,])
 
       class_acc_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       aic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
@@ -250,7 +240,7 @@ cross_validate_it_dichot <-
             trim = trim_temp,
             family = binomial(),
             glmer.control = glmerControl(optim = 'bobyqa'),
-            ...
+            mob.control = do.call(mob_control, tuning_grid_temp)
           )
 
         temp_assessment <- assessment(cv_obj$splits[[i]])
