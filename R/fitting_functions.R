@@ -241,6 +241,8 @@ cross_validate_it_dichot <-
       class_acc_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       aic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       bic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
+      number_terminal_nodes_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
+
 
       for (i in 1:number_cv_sets){
 
@@ -276,8 +278,15 @@ cross_validate_it_dichot <-
         class_acc_temp[i] <- class_acc(observed_y = temp_new_Y, predicted_y = round(temp_predictions))
         aic_temp[i] <- AIC(fitted_result)
         bic_temp[i] <- BIC(fitted_result)
+        number_terminal_nodes_temp[i] <- length(partykit:::.list.rules.party(fitted_result$tree))
+
         message(paste0("cv index ", i, " complete"))
       }
+
+
+      mean_num_t_nodes <- mean(number_terminal_nodes_temp)
+      se_num_t_nodes <- sd(number_terminal_nodes_temp)/sqrt(length(number_terminal_nodes_temp))
+
 
       mean_class_acc <- mean(class_acc_temp)
 
@@ -299,6 +308,8 @@ cross_validate_it_dichot <-
           se_aic = se_aic,
           mean_bic = mean_bic,
           se_bic = se_bic,
+          mean_num_t_nodes = mean_num_t_nodes,
+          se_num_t_nodes = se_num_t_nodes
           # build in option to extract each
           # fit = list(fitted_result),
         ) %>%
