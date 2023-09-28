@@ -235,6 +235,8 @@ nrep_par <-
     new_quant_param(
       range =  c(nrep_min, nrep_max),
       label = c(nrep_par = "number of reps to estimate L2 statistic p-values"),
+      inclusive = c(TRUE, TRUE),
+      trans = NULL,
       finalize = NULL
     )
 

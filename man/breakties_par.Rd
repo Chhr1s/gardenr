@@ -20,7 +20,7 @@ with parameter stability tests of continuous splitting variables
 \examples{
 dials::grid_max_entropy(
    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
-   alpha_par(alpha_min = 0.10, alpha_max = 0.001),
+   alpha_par(alpha_min = 0.001, alpha_max = 0.1),
    bonferroni_par(),
    size = 10
    )
