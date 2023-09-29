@@ -214,11 +214,8 @@ cross_validate_it_dichot <-
       tuning_grid <-
         grid_max_entropy(
           maxdepth_par(),
-          #minsize_par,
           alpha_par(),
-          trim_par(),
-          #catsplit_par,
-          size = 25
+          size = 5
         )
       message('meaningful defaults have not been implemented, please specify a tuning grid for better results')
     }
@@ -239,7 +236,6 @@ cross_validate_it_dichot <-
         )
 
       tuning_grid_temp <- replace_prune_when_null(tuning_grid_temp)
-
 
       class_acc_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       aic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))

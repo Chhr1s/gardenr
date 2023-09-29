@@ -59,10 +59,16 @@ class_acc <-
 #' internal function which takes the temporary tuning grid (used within cross validate)
 #' and swaps the "null" as a character to it as NULL
 replace_prune_when_null <- function(tuning_grid_temp) {
-  lapply(tuning_grid_temp, function(vec) {
-    if ("prune" %in% names(vec) && vec[["prune"]] == 'null') {
-      vec[["prune"]] <- NULL
-    }
-    return(vec)
-  })
+  remove_i <- which(vapply(tuning_grid_temp, FUN = function(x)(x == 'null'), TRUE))
+
+  tuning_grid_temp_new <- tuning_grid_temp[-remove_i]
+
+  out <- append(tuning_grid_temp_new, list('prune_par' = c()))
+
+  return(out)
+
 }
+
+
+
+
