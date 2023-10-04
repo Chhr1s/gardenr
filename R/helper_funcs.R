@@ -75,14 +75,6 @@ correct_ranefstart <- function(tuning_grid_temp) {
 
   ranefstart_par_correction <- tuning_grid_temp[['ranefstart_par']]
 
-  if(ranefstart_par_correction == 'tree'){
-    ranefstart_par <- c()
-  }
-
-  if(ranefstart_par_correction == 'ranef'){
-    ranefstart_par <- TRUE
-  }
-
   remove_i <-
     which(
       vapply(names(tuning_grid_temp), FUN = function(x)(x == 'ranefstart_par'), TRUE)
@@ -90,7 +82,17 @@ correct_ranefstart <- function(tuning_grid_temp) {
 
   tuning_grid_temp_new <- tuning_grid_temp[-remove_i]
 
-  out <- append(tuning_grid_temp_new, list('ranefstart_par' = ranefstart_par))
+
+  if(ranefstart_par_correction == 'tree'){
+    out <- append(tuning_grid_temp_new, list('ranefstart_par' = c()))
+  }
+
+  if(ranefstart_par_correction == 'ranef'){
+    out <- append(tuning_grid_temp_new, list('ranefstart_par' = TRUE))
+  }
+
+
+
 
   return(out)
 
