@@ -71,18 +71,33 @@ replace_prune_when_null <- function(tuning_grid_temp) {
 
 #' internal function which takes the temporary tuning grid (used within cross validate)
 #' and swaps the "null" as a character to it as NULL
-replace_ranefstart_when_false <- function(tuning_grid_temp) {
+correct_ranefstart <- function(tuning_grid_temp) {
+
+  ranefstart_par_correction <- tuning_grid_temp[['ranefstart_par']]
+
+  if(ranefstart_par_correction == 'tree'){
+    ranefstart_par <- c()
+  }
+
+  if(ranefstart_par_correction == 'ranef'){
+    ranefstart_par <- TRUE
+  }
+
   remove_i <-
     which(
-      vapply(tuning_grid_temp, FUN = function(x)(x == FALSE), TRUE) &
-        vapply(tuning_grid_temp, FUN = function(x)(names(x) == 'ranefstart_par'), as.character())
-      )
+      vapply(names(tuning_grid_temp), FUN = function(x)(x == 'ranefstart_par'), TRUE)
+    )
 
   tuning_grid_temp_new <- tuning_grid_temp[-remove_i]
 
-  out <- append(tuning_grid_temp_new, list('ranefstart_par' = c()))
+  out <- append(tuning_grid_temp_new, list('ranefstart_par' = ranefstart_par))
 
   return(out)
 
 }
+
+tuning_grid[2,][['ranefstart_par']]
+
+
+
 

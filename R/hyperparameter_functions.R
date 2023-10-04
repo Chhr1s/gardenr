@@ -231,12 +231,12 @@ ordinal_par <-
 #'    )
 
 ranefstart_par <-
-  function(values = c(TRUE, FALSE)){
+  function(values = c('tree', 'ranef')){
 
     new_qual_param(
-      type = "logical",
+      type = "character",
       values = values,
-      label = c(ranefstart_par = "Estimate RE first? FALSE = Tree first)"),
+      label = c(ranefstart_par = "Estimate Tree or Ranef First"),
       finalize = NULL
     )
 
