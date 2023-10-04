@@ -3,11 +3,11 @@
 \name{correct_ranefstart}
 \alias{correct_ranefstart}
 \title{internal function which takes the temporary tuning grid (used within cross validate)
-and swaps the "null" as a character to it as NULL}
+returns what glmertree expects}
 \usage{
 correct_ranefstart(tuning_grid_temp)
 }
 \description{
 internal function which takes the temporary tuning grid (used within cross validate)
-and swaps the "null" as a character to it as NULL
+returns what glmertree expects
 }

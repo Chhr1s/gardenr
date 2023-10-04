@@ -228,12 +228,21 @@ cross_validate_it_dichot <-
 
     for (j in 1:nrow(tuning_grid)){
 
+      tuning_grid_temp <-
+        as.list(tuning_grid[j,])
+
+      if ('prune_par' %in% names(tuning_grid)){
+        tuning_grid_temp <-
+          replace_prune_when_null(tuning_grid_temp)
+      }
+
+      if ('ranefstart_par' %in% names(tuning_grid)){
+        tuning_grid_temp <-
+          correct_ranefstart(tuning_grid_temp)
+      }
 
       tuning_grid_temp <-
-        tuning_grid[j,] %>%
-        as.list() %>%
-        replace_prune_when_null() %>%
-        correct_ranefstart() %>%
+        tuning_grid_temp %>%
         setNames(sub('_par', '', names(.)))
 
       class_acc_temp <- vector(mode = 'numeric', length = length(number_cv_sets))

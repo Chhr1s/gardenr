@@ -70,7 +70,7 @@ replace_prune_when_null <- function(tuning_grid_temp) {
 }
 
 #' internal function which takes the temporary tuning grid (used within cross validate)
-#' and swaps the "null" as a character to it as NULL
+#' returns what glmertree expects
 correct_ranefstart <- function(tuning_grid_temp) {
 
   ranefstart_par_correction <- tuning_grid_temp[['ranefstart_par']]
@@ -83,16 +83,13 @@ correct_ranefstart <- function(tuning_grid_temp) {
   tuning_grid_temp_new <- tuning_grid_temp[-remove_i]
 
 
-  if(ranefstart_par_correction == 'tree'){
+  if (ranefstart_par_correction == 'tree') {
     out <- append(tuning_grid_temp_new, list('ranefstart_par' = c()))
   }
 
-  if(ranefstart_par_correction == 'ranef'){
+  if (ranefstart_par_correction == 'ranef') {
     out <- append(tuning_grid_temp_new, list('ranefstart_par' = TRUE))
   }
-
-
-
 
   return(out)
 
