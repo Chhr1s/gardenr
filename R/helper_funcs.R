@@ -96,8 +96,6 @@ correct_ranefstart <- function(tuning_grid_temp) {
 
 }
 
-tuning_grid[2,][['ranefstart_par']]
-
 
 
 

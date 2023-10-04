@@ -4,7 +4,7 @@
 \alias{ranefstart_par}
 \title{make parameter for determining swapping between tree and}
 \usage{
-ranefstart_par(values = c(TRUE, FALSE))
+ranefstart_par(values = c("tree", "ranef"))
 }
 \arguments{
 \item{values}{a vector of possible values c("chisq", "max", "L2"), see ?mob_control()}
