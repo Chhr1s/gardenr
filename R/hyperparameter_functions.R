@@ -211,6 +211,39 @@ ordinal_par <-
 
 
 
+
+
+#' make parameter for determining swapping between tree and
+#'
+#' @importFrom dials new_quant_param new_qual_param grid_max_entropy
+#'
+#' @return A quantitative parameter, from `{dials}` for catsplit
+#' @export
+#'
+#' @param values a vector of possible values c("chisq", "max", "L2"), see ?mob_control()
+#'
+#' @examples
+#' dials::grid_max_entropy(
+#'    maxdepth_par(maxdepth_min = 2, maxdepth_max = 5),
+#'    alpha_par(alpha_min = 0.001, alpha_max = 0.1),
+#'    new_qual_param(),
+#'    size = 10
+#'    )
+
+ranefstart_par <-
+  function(values = c(TRUE, FALSE)){
+
+    new_qual_param(
+      type = "logical",
+      values = values,
+      label = c(ranefstart_par = "Estimate RE first? FALSE = Tree first)"),
+      finalize = NULL
+    )
+
+  }
+
+
+
 #' make parameter for `nrep`, number of replications in simulation of p-values with L2 statistic
 #'
 #' @importFrom dials new_quant_param new_qual_param grid_max_entropy
@@ -275,7 +308,6 @@ breakties_par <-
   }
 
 
-#ranefstart <- as.numeric(int_to_character(x[13], 'ranefstart'))
 
 #' make parameter for tuning level of significance in instability tests
 #'

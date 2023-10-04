@@ -233,6 +233,7 @@ cross_validate_it_dichot <-
         tuning_grid[j,] %>%
         as.list() %>%
         replace_prune_when_null() %>%
+        replace_ranefstart_when_false() %>%
         setNames(sub('_par', '', names(.)))
 
       class_acc_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
