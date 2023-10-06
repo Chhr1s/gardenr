@@ -257,30 +257,58 @@ cross_validate_it_dichot <-
 
         ## this can be modified to get the lmer/glmer in one function
 
-        fitted_result <-
-          do.call(
-            glmertree,
-            c(list(
-              data = temp_analysis,
-              formula = mod_formula,
-              family = binomial(),
-              glmer.control = glmerControl(optim = 'bobyqa'),
-              nAGQ = 0
-            ),
-            tuning_grid_temp
-            )
+        # fitted_result <-
+        #   do.call(
+        #     glmertree,
+        #     c(list(
+        #       data = temp_analysis,
+        #       formula = mod_formula,
+        #       family = binomial(),
+        #       glmer.control = glmerControl(optim = 'bobyqa'),
+        #       nAGQ = 0
+        #     ),
+        #     tuning_grid_temp
+        #     )
+        #   )
+
+        other_args <-
+          list(
+            data = temp_analysis,
+            formula = mod_formula,
+            family = binomial(),
+            glmer.control = glmerControl(optim = 'bobyqa'),
+            nAGQ = 0
           )
+
+        args_all <- append(tuning_grid_temp, other_args)
 
 
         temp_assessment <- assessment(cv_obj$splits[[i]])
 
-        temp_predictions <-
-          glmertree:::predict.glmertree(
-            fitted_result,
-            newdata = temp_assessment,
-            allow.new.levels = TRUE,
-            type = 'response'
-          )
+        temp_predictions <- 0
+
+      tryCatch({
+        # Code that might generate an error or warning
+        fitted_result <- do.call(glmertree, args_all)
+
+        # overwrite the all 0 predictions if there isn't an error
+        if (!inherits(fitted_result, "try-error")) {
+          temp_predictions <-
+            glmertree:::predict.glmertree(
+              fitted_result,
+              newdata = temp_assessment,
+              allow.new.levels = TRUE,
+              type = 'response'
+            )
+        }
+      }, error = function(e) {
+        # Code to handle an error
+        message('error; all predictions set to 0')
+      }, warning = function(w) {
+        # Code to handle a warning
+        message('warning; all predictions set to 0')
+      }, finally = {}
+      )
 
         temp_new_Y <- temp_assessment[[attr(mod_formula, "lhs")[[1]]]]
 
