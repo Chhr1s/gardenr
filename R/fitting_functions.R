@@ -313,10 +313,10 @@ cross_validate_it_dichot <-
         temp_new_Y <- temp_assessment[[attr(mod_formula, "lhs")[[1]]]]
 
         class_acc_temp[i] <- class_acc(observed_y = temp_new_Y, predicted_y = round(temp_predictions))
-        aic_temp[i] <- if (!inherits(fitted_result, "try-error")) {NA_real_} else{AIC(fitted_result)}
-        bic_temp[i] <- if (!inherits(fitted_result, "try-error")) {NA_real_}else{BIC(fitted_result)}
+        aic_temp[i] <- if (inherits(fitted_result, "try-error")) {NA_real_} else{AIC(fitted_result)}
+        bic_temp[i] <- if (inherits(fitted_result, "try-error")) {NA_real_}else{BIC(fitted_result)}
         number_terminal_nodes_temp[i] <-
-          if (!inherits(fitted_result, "try-error")) {NA_real_}
+          if (inherits(fitted_result, "try-error")) {NA_real_}
           else{length(partykit:::.list.rules.party(fitted_result$tree))}
 
 
