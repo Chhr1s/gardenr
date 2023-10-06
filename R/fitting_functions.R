@@ -313,27 +313,31 @@ cross_validate_it_dichot <-
         temp_new_Y <- temp_assessment[[attr(mod_formula, "lhs")[[1]]]]
 
         class_acc_temp[i] <- class_acc(observed_y = temp_new_Y, predicted_y = round(temp_predictions))
-        aic_temp[i] <- AIC(fitted_result)
-        bic_temp[i] <- BIC(fitted_result)
-        number_terminal_nodes_temp[i] <- length(partykit:::.list.rules.party(fitted_result$tree))
+        aic_temp[i] <- if (!inherits(fitted_result, "try-error")) {NA_real_} else{AIC(fitted_result)}
+        bic_temp[i] <- if (!inherits(fitted_result, "try-error")) {NA_real_}else{BIC(fitted_result)}
+        number_terminal_nodes_temp[i] <-
+          if (!inherits(fitted_result, "try-error")) {NA_real_}
+          else{length(partykit:::.list.rules.party(fitted_result$tree))}
+
+
 
         message(paste0("cv index ", i, " complete"))
       }
 
 
-      mean_num_t_nodes <- mean(number_terminal_nodes_temp)
-      se_num_t_nodes <- sd(number_terminal_nodes_temp)/sqrt(length(number_terminal_nodes_temp))
+      mean_num_t_nodes <- mean(number_terminal_nodes_temp, na.rm = TRUE)
+      se_num_t_nodes <- sd(number_terminal_nodes_temp, na.rm = TRUE)/sqrt(length(number_terminal_nodes_temp))
 
 
-      mean_class_acc <- mean(class_acc_temp)
+      mean_class_acc <- mean(class_acc_temp, na.rm = TRUE)
 
-      mean_aic <- mean(aic_temp)
-      mean_bic <- mean(bic_temp)
+      mean_aic <- mean(aic_temp, na.rm = TRUE)
+      mean_bic <- mean(bic_temp, na.rm = TRUE)
 
-      se_class_acc <- sd(class_acc_temp)/sqrt(length(class_acc_temp))
+      se_class_acc <- sd(class_acc_temp, na.rm = TRUE)/sqrt(length(class_acc_temp))
 
-      se_aic <- sd(aic_temp)/sqrt(length(aic_temp))
-      se_bic <- sd(bic_temp)/sqrt(length(bic_temp))
+      se_aic <- sd(aic_temp, na.rm = TRUE)/sqrt(length(aic_temp))
+      se_bic <- sd(bic_temp, na.rm = TRUE)/sqrt(length(bic_temp))
 
       temp_results <-
         tuning_grid[j,] %>%
