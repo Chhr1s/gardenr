@@ -285,14 +285,31 @@ cross_validate_it_dichot <-
 
         temp_assessment <- assessment(cv_obj$splits[[i]])
 
-        temp_predictions <- 0
 
-      tryCatch({
-        # Code that might generate an error or warning
-        fitted_result <- do.call(glmertree, args_all)
+        safe_gt <- safely(do.call(glmertree, args_all))
 
-        # overwrite the all 0 predictions if there isn't an error
-        if (!inherits(fitted_result, "try-error")) {
+        # Apply the safe_gt() function
+        result_safely <- safe_gt()
+
+
+        number_terminal_nodes_temp[i] <- NA_real_
+        aic_temp[i] <- NA_real_
+        bic_temp[i] <- NA_real_
+        class_acc_temp[i] <- NA_real_
+
+
+
+        # Check the results
+        if (!is.null(result_safely$error)) {
+          ## do not update model fit if convergence issues
+          message('error; all y = 0')
+
+        } else if (!is.null(result_safely$warning)) {
+          message('error; all y = 0')
+
+
+        } else {
+          #cat("No warning or error occurred.\n")
           temp_predictions <-
             glmertree:::predict.glmertree(
               fitted_result,
@@ -300,25 +317,20 @@ cross_validate_it_dichot <-
               allow.new.levels = TRUE,
               type = 'response'
             )
+
+          aic_temp[i] <- AIC(fitted_result)
+          bic_temp[i] <- BIC(fitted_result)
+
+          number_terminal_nodes_temp[i] <-
+            length(
+              partykit:::.list.rules.party(fitted_result$tree)
+            )
+
+          temp_new_Y <- temp_assessment[[attr(mod_formula, "lhs")[[1]]]]
+
+          class_acc_temp[i] <- class_acc(observed_y = temp_new_Y, predicted_y = round(temp_predictions))
+
         }
-      }, error = function(e) {
-        # Code to handle an error
-        message('error; all predictions set to 0')
-      }, warning = function(w) {
-        # Code to handle a warning
-        message('warning; all predictions set to 0')
-      }, finally = {}
-      )
-
-        temp_new_Y <- temp_assessment[[attr(mod_formula, "lhs")[[1]]]]
-
-        class_acc_temp[i] <- class_acc(observed_y = temp_new_Y, predicted_y = round(temp_predictions))
-        aic_temp[i] <- if (inherits(fitted_result, "try-error")) {NA_real_} else{AIC(fitted_result)}
-        bic_temp[i] <- if (inherits(fitted_result, "try-error")) {NA_real_}else{BIC(fitted_result)}
-        number_terminal_nodes_temp[i] <-
-          if (inherits(fitted_result, "try-error")) {NA_real_}
-          else{length(partykit:::.list.rules.party(fitted_result$tree))}
-
 
 
         message(paste0("cv index ", i, " complete"))
