@@ -286,10 +286,10 @@ cross_validate_it_dichot <-
         temp_assessment <- assessment(cv_obj$splits[[i]])
 
 
-        safe_gt <- safely(do.call(glmertree, args_all))
+        safe_gt <- safely(function(arguments){do.call(glmertree, arguments)})
 
         # Apply the safe_gt() function
-        result_safely <- safe_gt()
+        result_safely <- safe_gt(args_all)
 
 
         number_terminal_nodes_temp[i] <- NA_real_
@@ -302,11 +302,7 @@ cross_validate_it_dichot <-
         # Check the results
         if (!is.null(result_safely$error)) {
           ## do not update model fit if convergence issues
-          message('error; all y = 0')
-
-        } else if (!is.null(result_safely$warning)) {
-          message('error; all y = 0')
-
+          message('model fitting error (or warning if `options(warn = 2)`\nFit set to NA')
 
         } else {
           #cat("No warning or error occurred.\n")
