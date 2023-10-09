@@ -305,6 +305,7 @@ cross_validate_it_dichot <-
           message('model fitting error (or warning if `options(warn = 2)`\nFit set to NA')
 
         } else {
+          fitted_result <- result_safely$result
           #cat("No warning or error occurred.\n")
           temp_predictions <-
             glmertree:::predict.glmertree(
