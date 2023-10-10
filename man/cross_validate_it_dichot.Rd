@@ -4,13 +4,7 @@
 \alias{cross_validate_it_dichot}
 \title{fit \code{glmertree()} to a cross-validated data set. For dichotomous outcomes.}
 \usage{
-cross_validate_it_dichot(
-  cv_obj,
-  seed = 713,
-  mod_formula,
-  tuning_grid = NULL,
-  dichotomous = FALSE
-)
+cross_validate_it_dichot(cv_obj, seed = 713, mod_formula, tuning_grid = NULL)
 }
 \arguments{
 \item{cv_obj}{vfold_cv—a v-fold cross-validated dataset from \code{rsample::vfold_cv()}}

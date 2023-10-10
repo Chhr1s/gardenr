@@ -207,8 +207,7 @@ cross_validate_it_dichot <-
     cv_obj,
     seed = 713,
     mod_formula,
-    tuning_grid = NULL,
-    dichotomous = FALSE
+    tuning_grid = NULL
   ){
     if (is.null(tuning_grid)){
       tuning_grid <-
@@ -246,6 +245,7 @@ cross_validate_it_dichot <-
         setNames(sub('_par', '', names(.)))
 
       class_acc_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
+      missing_fit <- vector(mode = 'numeric', length = length(number_cv_sets))
       aic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       bic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       number_terminal_nodes_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
@@ -255,21 +255,6 @@ cross_validate_it_dichot <-
 
         temp_analysis <- analysis(cv_obj$splits[[i]])
 
-        ## this can be modified to get the lmer/glmer in one function
-
-        # fitted_result <-
-        #   do.call(
-        #     glmertree,
-        #     c(list(
-        #       data = temp_analysis,
-        #       formula = mod_formula,
-        #       family = binomial(),
-        #       glmer.control = glmerControl(optim = 'bobyqa'),
-        #       nAGQ = 0
-        #     ),
-        #     tuning_grid_temp
-        #     )
-        #   )
 
         other_args <-
           list(
@@ -286,6 +271,7 @@ cross_validate_it_dichot <-
         temp_assessment <- assessment(cv_obj$splits[[i]])
 
 
+        ## this can be modified to get the lmer/glmer in one function
         safe_gt <- safely(function(arguments){do.call(glmertree, arguments)})
 
         # Apply the safe_gt() function
@@ -303,6 +289,7 @@ cross_validate_it_dichot <-
         if (!is.null(result_safely$error)) {
           ## do not update model fit if convergence issues
           message('model fitting error (or warning if `options(warn = 2)`\nFit set to NA')
+          missing_fit[i] <- TRUE
 
         } else {
           fitted_result <- result_safely$result
@@ -317,6 +304,7 @@ cross_validate_it_dichot <-
 
           aic_temp[i] <- AIC(fitted_result)
           bic_temp[i] <- BIC(fitted_result)
+          missing_fit[i] <- FALSE
 
           number_terminal_nodes_temp[i] <-
             length(
@@ -333,7 +321,7 @@ cross_validate_it_dichot <-
         message(paste0("cv index ", i, " complete"))
       }
 
-
+      total_problematic <- sum(missing_fit)
       mean_num_t_nodes <- mean(number_terminal_nodes_temp, na.rm = TRUE)
       se_num_t_nodes <- sd(number_terminal_nodes_temp, na.rm = TRUE)/sqrt(length(number_terminal_nodes_temp))
 
@@ -352,6 +340,7 @@ cross_validate_it_dichot <-
         tuning_grid[j,] %>%
         mutate(
           grid_index = j,
+          total_problematic = total_problematic,
           mean_class_acc = mean_class_acc,
           se_class_acc = se_class_acc,
           mean_aic = mean_aic,
