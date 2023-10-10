@@ -255,7 +255,6 @@ cross_validate_it_dichot <-
 
         temp_analysis <- analysis(cv_obj$splits[[i]])
 
-
         other_args <-
           list(
             data = temp_analysis,
@@ -266,9 +265,8 @@ cross_validate_it_dichot <-
           )
 
         args_all <- append(tuning_grid_temp, other_args)
-
-
         temp_assessment <- assessment(cv_obj$splits[[i]])
+
 
 
         ## this can be modified to get the lmer/glmer in one function
@@ -281,14 +279,12 @@ cross_validate_it_dichot <-
         number_terminal_nodes_temp[i] <- NA_real_
         aic_temp[i] <- NA_real_
         bic_temp[i] <- NA_real_
-        class_acc_temp[i] <- NA_real_
-
-
+        class_acc_temp[i] <- 0
 
         # Check the results
         if (!is.null(result_safely$error)) {
           ## do not update model fit if convergence issues
-          message('model fitting error (or warning if `options(warn = 2)`\nFit set to NA')
+          message('model fitting error (or warning if `options(warn = 2)`\nFit set to 0')
           missing_fit[i] <- TRUE
 
         } else {
