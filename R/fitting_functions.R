@@ -82,6 +82,7 @@ cross_validate_it <-
 
       aic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       bic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
+      top_split_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
 
       for (i in 1:number_cv_sets){
 
@@ -108,7 +109,7 @@ cross_validate_it <-
           )
 
       temp_new_Y <- temp_assessment[[attr(mod_formula, "lhs")[[1]]]]
-
+      top_split_temp[i] <- extract_top_split(fitted_result$tree)
       rmse_temp[i] <- rmse(observed_y = temp_new_Y, predicted_y = temp_predictions)
       mae_temp[i] <- mae(observed_y = temp_new_Y, predicted_y = temp_predictions)
       aic_temp[i] <- AIC(fitted_result)
@@ -140,6 +141,7 @@ cross_validate_it <-
           se_aic = se_aic,
           mean_bic = mean_bic,
           se_bic = se_bic,
+          top_split_list = list(top_split_temp)
           # build in option to extract each
           # fit = list(fitted_result),
         ) %>%

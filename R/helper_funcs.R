@@ -97,4 +97,15 @@ correct_ranefstart <- function(tuning_grid_temp) {
 
 
 
+extract_top_split <-
+  function(tree_model){
+    strng <- partykit:::.list.rules.party(tree_model)
+    out <- unique(sub("^(\\S+).*", "\\1", strng))
+
+    if (out == ''){
+      out <- 'NO SPLIT'
+    }
+    return(out)
+  }
+
 
