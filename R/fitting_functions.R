@@ -252,6 +252,7 @@ cross_validate_it_dichot <-
       bic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       loglik_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       number_terminal_nodes_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
+      top_split_temp[i] <- extract_top_split(fitted_result$tree)
 
 
       for (i in 1:number_cv_sets){
@@ -284,6 +285,8 @@ cross_validate_it_dichot <-
         bic_temp[i] <- NA_real_
         loglik_temp[i] <- NA_real_
         class_acc_temp[i] <- 0
+        top_split_temp[i] <- NA_character_
+
 
         # Check the results
         if (!is.null(result_safely$error)) {
@@ -302,6 +305,7 @@ cross_validate_it_dichot <-
               type = 'response'
             )
 
+          top_split_temp[i] <- extract_top_split(fitted_result$tree)
           aic_temp[i] <- AIC(fitted_result)
           bic_temp[i] <- BIC(fitted_result)
           loglik_temp[i] <- result_safely$result$loglik
@@ -354,7 +358,8 @@ cross_validate_it_dichot <-
           mean_num_t_nodes = mean_num_t_nodes,
           se_num_t_nodes = se_num_t_nodes,
           mean_loglik = mean_loglik,
-          se_loglik = se_loglik
+          se_loglik = se_loglik,
+          top_split_list = list(top_split_temp)
           # build in option to extract each
           # fit = list(fitted_result),
         ) %>%
