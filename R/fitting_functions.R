@@ -279,6 +279,7 @@ cross_validate_it_dichot <-
         number_terminal_nodes_temp[i] <- NA_real_
         aic_temp[i] <- NA_real_
         bic_temp[i] <- NA_real_
+        loglik_temp[i] <- NA_real_
         class_acc_temp[i] <- 0
 
         # Check the results
@@ -300,6 +301,7 @@ cross_validate_it_dichot <-
 
           aic_temp[i] <- AIC(fitted_result)
           bic_temp[i] <- BIC(fitted_result)
+          loglik_temp[i] <- result_safely$result$loglik
           missing_fit[i] <- FALSE
 
           number_terminal_nodes_temp[i] <-
@@ -320,6 +322,9 @@ cross_validate_it_dichot <-
       total_problematic <- sum(missing_fit)
       mean_num_t_nodes <- mean(number_terminal_nodes_temp, na.rm = TRUE)
       se_num_t_nodes <- sd(number_terminal_nodes_temp, na.rm = TRUE)/sqrt(length(number_terminal_nodes_temp))
+
+      mean_loglik <- mean(loglik_temp, na.rm = TRUE)
+      se_loglik <- sd(loglik_temp, na.rm = TRUE)/sqrt(length(loglik_temp))
 
 
       mean_class_acc <- mean(class_acc_temp, na.rm = TRUE)
@@ -344,7 +349,9 @@ cross_validate_it_dichot <-
           mean_bic = mean_bic,
           se_bic = se_bic,
           mean_num_t_nodes = mean_num_t_nodes,
-          se_num_t_nodes = se_num_t_nodes
+          se_num_t_nodes = se_num_t_nodes,
+          mean_loglik = mean_loglik,
+          se_loglik = se_loglik
           # build in option to extract each
           # fit = list(fitted_result),
         ) %>%
