@@ -248,6 +248,7 @@ cross_validate_it_dichot <-
       missing_fit <- vector(mode = 'numeric', length = length(number_cv_sets))
       aic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       bic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
+      loglik_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       number_terminal_nodes_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
 
 
