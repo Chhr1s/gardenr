@@ -252,7 +252,7 @@ cross_validate_it_dichot <-
       bic_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       loglik_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
       number_terminal_nodes_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
-      top_split_temp[i] <- vector(mode = 'numeric', length = length(number_cv_sets))
+      top_split_temp <- vector(mode = 'numeric', length = length(number_cv_sets))
 
 
       for (i in 1:number_cv_sets){
