@@ -61,9 +61,9 @@ class_acc <-
 replace_prune_when_null <- function(tuning_grid_temp) {
   remove_i <- which(vapply(tuning_grid_temp, FUN = function(x)(x == 'null'), TRUE))
 
-  tuning_grid_temp_new <- tuning_grid_temp[-remove_i]
+  # this works because prune = NULL is the default
+  out <- tuning_grid_temp[-remove_i]
 
-  out <- append(tuning_grid_temp_new, list('prune_par' = c()))
 
   return(out)
 
@@ -82,10 +82,7 @@ correct_ranefstart <- function(tuning_grid_temp) {
 
   tuning_grid_temp_new <- tuning_grid_temp[-remove_i]
 
-
-  if (ranefstart_par_correction == 'tree') {
-    out <- append(tuning_grid_temp_new, list('ranefstart_par' = c()))
-  }
+  # this works because ranefstart = NULL is the default
 
   if (ranefstart_par_correction == 'ranef') {
     out <- append(tuning_grid_temp_new, list('ranefstart_par' = TRUE))
