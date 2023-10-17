@@ -4,16 +4,16 @@
 \alias{cross_validate_it_dichot}
 \title{fit \code{glmertree()} to a cross-validated data set. For dichotomous outcomes.}
 \usage{
-cross_validate_it_dichot(cv_obj, seed = 713, mod_formula, tuning_grid = NULL)
+cross_validate_it_dichot(cv_obj, mod_formula, tuning_grid = NULL)
 }
 \arguments{
 \item{cv_obj}{vfold_cv—a v-fold cross-validated dataset from \code{rsample::vfold_cv()}}
 
-\item{seed}{integer—starting seed}
-
 \item{mod_formula}{Formula—made from \code{as.Formula()}. uppercase required \verb{:)}}
 
 \item{tuning_grid}{— either tuning grid e.g., from \code{dials::grid_max_entropy()} or default grid (when \code{tuning_grid = NULL}).}
+
+\item{seed}{integer—starting seed}
 
 \item{...}{additional arguments to be passed to \code{glmertree()}}
 }

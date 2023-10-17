@@ -207,7 +207,7 @@ cross_validate_it <-
 cross_validate_it_dichot <-
   function(
     cv_obj,
-    seed = 713,
+    #seed = 713,
     mod_formula,
     tuning_grid = NULL
   ){
@@ -221,7 +221,7 @@ cross_validate_it_dichot <-
       message('meaningful defaults have not been implemented, please specify a tuning grid for better results')
     }
 
-    set.seed(seed)
+    #set.seed(seed)
     number_cv_sets <- length(cv_obj$splits)
     results <- tibble()
 
