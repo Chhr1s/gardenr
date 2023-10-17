@@ -80,12 +80,12 @@ correct_ranefstart <- function(tuning_grid_temp) {
       vapply(names(tuning_grid_temp), FUN = function(x)(x == 'ranefstart_par'), TRUE)
     )
 
-  tuning_grid_temp_new <- tuning_grid_temp[-remove_i]
+  out <- tuning_grid_temp[-remove_i]
 
   # this works because ranefstart = NULL is the default
 
   if (ranefstart_par_correction == 'ranef') {
-    out <- append(tuning_grid_temp_new, list('ranefstart_par' = TRUE))
+    out <- append(out, list('ranefstart_par' = TRUE))
   }
 
   return(out)
